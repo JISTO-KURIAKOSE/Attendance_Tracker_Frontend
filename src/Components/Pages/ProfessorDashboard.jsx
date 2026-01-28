@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './ProfessorDashboard.css';
 
-const API = 'http://192.168.1.7:8000';
+const API = 'https://attendance-backend-tbry.onrender.com';
 
 export default function ProfessorDashboard() {
   const [requests, setRequests] = useState([]);
