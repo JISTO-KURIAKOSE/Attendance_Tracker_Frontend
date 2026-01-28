@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MainPage from './Components/Pages/mainpage';
+import MainPage from './Components/Pages/MainPage';
 import TrackerPage from './Components/Pages/TrackerPage';
 import ProfessorDashboard from './Components/Pages/ProfessorDashboard'; // New Import
 import './App.css';
