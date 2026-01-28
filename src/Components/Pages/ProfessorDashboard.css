@@ -1,0 +1,52 @@
+.prof-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px;
+}
+.prof-title {
+  color: #e50914;
+  margin-bottom: 30px;
+}
+
+.prof-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.prof-table th {
+  color: #808080;
+  border-bottom: 1px solid #333;
+  padding: 15px;
+}
+.prof-table td {
+  padding: 15px;
+  border-bottom: 1px solid #222;
+  vertical-align: middle;
+}
+
+.btn-approve {
+  background: #46d369;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-weight: bold;
+}
+.btn-reject {
+  background: transparent;
+  color: #e50914;
+  border: 1px solid #e50914;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-approve:hover {
+  background: #38a153;
+}
+.btn-reject:hover {
+  background: rgba(229, 9, 20, 0.1);
+}

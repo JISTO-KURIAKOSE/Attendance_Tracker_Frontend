@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: 1px solid #222;
+}
+
+.nav-logo {
+  color: red;
+}
+
+.nav-buttons a {
+  margin-left: 15px;
+  padding: 8px 20px;
+  background: red;
+  border-radius: 20px;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.nav-buttons a:hover {
+  background: #ff3b3b;
+}
+.nav-links {
+  display: flex;
+  gap: 15px; /* Space between buttons */
+}
+
+/* Styling Links as Red Buttons */
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  background-color: #ff0000; /* Primary Red */
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  display: inline-block;
+}
+
+/* Hover Effects */
+.nav-links a:hover {
+  background-color: #cc0000; /* Darker red on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+}
+
+/* Active State (Optional: shows which page you are on) */
+.nav-links a:active {
+  transform: translateY(0);
+}
