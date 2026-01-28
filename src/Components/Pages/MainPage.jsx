@@ -63,11 +63,7 @@ function MainPage() {
         <header className="pro-header">
           <div className="user-profile">
             <div className="avatar-container">
-              <img
-                src="https://via.placeholder.com/150"
-                alt="Profile"
-                className="main-avatar"
-              />
+              <img src="one.jpg" alt="Profile" className="main-avatar" />
             </div>
             <div className="user-meta">
               <h1>{studentName}</h1>
