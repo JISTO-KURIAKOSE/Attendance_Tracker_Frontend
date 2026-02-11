@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import jsPDF from 'jspdf';
+import jsPDF from 'jsPDF';
 import autoTable from 'jspdf-autotable';
 import './TrackerPage.css';
 
-// TrackerPage.jsx
 const API = 'https://attendance-backend-tbry.onrender.com';
 
 export default function TrackerPage() {
@@ -40,24 +39,18 @@ export default function TrackerPage() {
     try {
       const res = await fetch(`${API}/attendance`);
       const data = await res.json();
-      // Adjust this based on your API response structure
       setTotalPresent(data.count || 0);
     } catch (err) {
       console.error('Failed to fetch stats:', err);
     }
   };
 
-  // --- PDF GENERATION LOGIC ---
   const generatePDF = () => {
     const doc = new jsPDF();
-
-    // Design Settings
-    const primaryColor = [229, 9, 20]; // Netflix Red
-
+    const primaryColor = [229, 9, 20];
     doc.setFontSize(22);
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text('ATTENDANCE REPORT', 14, 20);
-
     doc.setFontSize(11);
     doc.setTextColor(100);
     doc.text(`Student: ${studentName || 'Not Specified'}`, 14, 30);
@@ -77,10 +70,7 @@ export default function TrackerPage() {
       head: [['Date', 'Status']],
       body: tableRows,
       headStyles: { fillColor: primaryColor },
-      alternateRowStyles: { fillColor: [250, 250, 250] },
-      margin: { top: 50 },
     });
-
     doc.save(`${studentName || 'Student'}_Attendance.pdf`);
   };
 
@@ -143,7 +133,7 @@ export default function TrackerPage() {
 
   return (
     <div className="netflix-bg">
-      <div className="tracker-wrapper">
+      <div className="tracker-wrapper mobile-container">
         <div className="clock-section glass-card">
           <div className="user-profile-header">
             {studentName && (
@@ -163,18 +153,22 @@ export default function TrackerPage() {
               </div>
             )}
           </div>
-
           <div className="live-clock-container">
             <div className="live-date">
-              {time.toLocaleDateString('en-US', {
+              {time.toLocaleDateString(undefined, {
                 weekday: 'long',
                 month: 'long',
                 day: 'numeric',
               })}
             </div>
-            <div className="live-clock">{time.toLocaleTimeString()}</div>
+            <div className="live-clock">
+              {time.toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+              })}
+            </div>
           </div>
-
           <button
             className={`punch-btn-pro ${sessionId ? 'out' : 'in'}`}
             onClick={handlePunch}
@@ -186,44 +180,29 @@ export default function TrackerPage() {
         <div className="stats-strip">
           <div className="stat-item">
             <span className="stat-label">Present</span>
-            <span className="stat-value">{totalPresent}</span>
+            <span className="stat-value">{totalPresent}/30</span>
           </div>
           <button className="btn-download" onClick={generatePDF}>
-            Download PDF Report
+            PDF Report
           </button>
         </div>
 
         <div className="calendar-section glass-card">
-          <div className="calendar-header">
-            <h3>Attendance Health</h3>
-            <div className="legend">
-              <span className="legend-item">
-                <i className="dot present"></i> Present
-              </span>
-              <span className="legend-item">
-                <i className="dot pending-approval"></i> Pending
-              </span>
-              <span className="legend-item">
-                <i className="dot shortage"></i> Shortage
-              </span>
-            </div>
-          </div>
-
+          <h3 className="calendar-title">Attendance Health</h3>
           <div className="calendar-grid">
             {getDaysInMonth().map(dateStr => {
               const rawStatus = attendanceData[dateStr] || 'Absent';
               const statusClass = rawStatus.replace(/\s+/g, '-').toLowerCase();
               const dayNum = dateStr.split('-')[2];
               const isFuture = new Date(dateStr) > new Date();
-
               return (
                 <div
                   key={dateStr}
                   className={`day-tile ${statusClass} ${isFuture ? 'future' : ''}`}
                   onClick={() => !isFuture && setSelectedDate(dateStr)}
                 >
-                  <span className="tile-num">{dayNum}</span>
-                  {!isFuture && <div className="status-bar"></div>}
+                  <span className="day-number">{dayNum}</span>
+                  {!isFuture && <div className="status-dot"></div>}
                 </div>
               );
             })}
@@ -234,14 +213,16 @@ export default function TrackerPage() {
           <div className="modal-overlay">
             <div className="reg-modal glass-card">
               <h2>Regularize</h2>
-              <p>Date: {selectedDate}</p>
+              <p>
+                Date: <span className="red-text">{selectedDate}</span>
+              </p>
               <form onSubmit={submitRegularization}>
                 <select
                   required
-                  onChange={e => setRegReason(e.target.value)}
                   className="reg-select"
+                  onChange={e => setRegReason(e.target.value)}
                 >
-                  <option value="">Reason</option>
+                  <option value="">Select Reason</option>
                   <option value="Forgot to Punch">Forgot to Punch</option>
                   <option value="College Event">College Event (OD)</option>
                   <option value="Technical Error">Technical Error</option>
@@ -253,10 +234,14 @@ export default function TrackerPage() {
                   required
                 />
                 <div className="modal-btns">
-                  <button type="button" onClick={() => setSelectedDate(null)}>
+                  <button
+                    type="button"
+                    className="close-btn"
+                    onClick={() => setSelectedDate(null)}
+                  >
                     Close
                   </button>
-                  <button type="submit" className="btn-submit">
+                  <button type="submit" className="submit-reg">
                     Submit
                   </button>
                 </div>
