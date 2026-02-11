@@ -1,5 +1,3 @@
-// Build Fix Attempt #1
-console.log('Deployment Fix V1');
 import { useState, useEffect } from 'react';
 import jsPDF from 'jsPDF';
 import autoTable from 'jspdf-autotable';
@@ -9,15 +7,11 @@ const API = 'https://attendance-backend-tbry.onrender.com';
 
 export default function TrackerPage() {
   const [time, setTime] = useState(new Date());
-  const [sessionId, setSessionId] = useState(
-    localStorage.getItem('activeSession')
-  );
+  const [sessionId, setSessionId] = useState(localStorage.getItem('activeSession'));
   const [attendanceData, setAttendanceData] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
   const [regReason, setRegReason] = useState('');
-  const [studentName, setStudentName] = useState(
-    localStorage.getItem('studentName') || ''
-  );
+  const [studentName, setStudentName] = useState(localStorage.getItem('studentName') || '');
   const [totalPresent, setTotalPresent] = useState(0);
 
   useEffect(() => {
@@ -56,11 +50,7 @@ export default function TrackerPage() {
     doc.setFontSize(11);
     doc.setTextColor(100);
     doc.text(`Student: ${studentName || 'Not Specified'}`, 14, 30);
-    doc.text(
-      `Month: ${time.toLocaleString('default', { month: 'long' })} ${time.getFullYear()}`,
-      14,
-      36
-    );
+    doc.text(`Month: ${time.toLocaleString('default', { month: 'long' })} ${time.getFullYear()}`, 14, 36);
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 42);
 
     const tableRows = Object.entries(attendanceData)
@@ -140,41 +130,19 @@ export default function TrackerPage() {
           <div className="user-profile-header">
             {studentName && (
               <div className="user-info">
-                <p className="user-welcome">
-                  Active: <strong>{studentName}</strong>
-                </p>
-                <button
-                  className="btn-switch"
-                  onClick={() => {
-                    localStorage.removeItem('studentName');
-                    setStudentName('');
-                  }}
-                >
-                  Switch User
-                </button>
+                <p className="user-welcome">Active: <strong>{studentName}</strong></p>
+                <button className="btn-switch" onClick={() => {
+                  localStorage.removeItem('studentName');
+                  setStudentName('');
+                }}>Switch User</button>
               </div>
             )}
           </div>
           <div className="live-clock-container">
-            <div className="live-date">
-              {time.toLocaleDateString(undefined, {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </div>
-            <div className="live-clock">
-              {time.toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-              })}
-            </div>
+            <div className="live-date">{time.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</div>
+            <div className="live-clock">{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</div>
           </div>
-          <button
-            className={`punch-btn-pro ${sessionId ? 'out' : 'in'}`}
-            onClick={handlePunch}
-          >
+          <button className={`punch-btn-pro ${sessionId ? 'out' : 'in'}`} onClick={handlePunch}>
             {sessionId ? 'PUNCH OUT' : 'PUNCH IN'}
           </button>
         </div>
@@ -184,9 +152,7 @@ export default function TrackerPage() {
             <span className="stat-label">Present</span>
             <span className="stat-value">{totalPresent}/30</span>
           </div>
-          <button className="btn-download" onClick={generatePDF}>
-            PDF Report
-          </button>
+          <button className="btn-download" onClick={generatePDF}>PDF Report</button>
         </div>
 
         <div className="calendar-section glass-card">
@@ -198,11 +164,8 @@ export default function TrackerPage() {
               const dayNum = dateStr.split('-')[2];
               const isFuture = new Date(dateStr) > new Date();
               return (
-                <div
-                  key={dateStr}
-                  className={`day-tile ${statusClass} ${isFuture ? 'future' : ''}`}
-                  onClick={() => !isFuture && setSelectedDate(dateStr)}
-                >
+                <div key={dateStr} className={`day-tile ${statusClass} ${isFuture ? 'future' : ''}`}
+                  onClick={() => !isFuture && setSelectedDate(dateStr)}>
                   <span className="day-number">{dayNum}</span>
                   {!isFuture && <div className="status-dot"></div>}
                 </div>
@@ -215,37 +178,18 @@ export default function TrackerPage() {
           <div className="modal-overlay">
             <div className="reg-modal glass-card">
               <h2>Regularize</h2>
-              <p>
-                Date: <span className="red-text">{selectedDate}</span>
-              </p>
+              <p>Date: <span className="red-text">{selectedDate}</span></p>
               <form onSubmit={submitRegularization}>
-                <select
-                  required
-                  className="reg-select"
-                  onChange={e => setRegReason(e.target.value)}
-                >
+                <select required className="reg-select" onChange={e => setRegReason(e.target.value)}>
                   <option value="">Select Reason</option>
                   <option value="Forgot to Punch">Forgot to Punch</option>
                   <option value="College Event">College Event (OD)</option>
                   <option value="Technical Error">Technical Error</option>
                 </select>
-                <textarea
-                  placeholder="Notes..."
-                  value={regReason}
-                  onChange={e => setRegReason(e.target.value)}
-                  required
-                />
+                <textarea placeholder="Notes..." value={regReason} onChange={e => setRegReason(e.target.value)} required />
                 <div className="modal-btns">
-                  <button
-                    type="button"
-                    className="close-btn"
-                    onClick={() => setSelectedDate(null)}
-                  >
-                    Close
-                  </button>
-                  <button type="submit" className="submit-reg">
-                    Submit
-                  </button>
+                  <button type="button" className="close-btn" onClick={() => setSelectedDate(null)}>Close</button>
+                  <button type="submit" className="submit-reg">Submit</button>
                 </div>
               </form>
             </div>
