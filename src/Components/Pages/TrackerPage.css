@@ -1,9 +1,10 @@
-/* GLOBAL SETTINGS */
+/* TrackerPage.css */
+
 .netflix-bg {
-  background: #000;
+  background-color: #000;
   color: #fff;
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 
 .tracker-wrapper {
@@ -21,76 +22,108 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* CLOCK SECTION */
-.clock-section { text-align: center; }
-.live-clock { font-size: 4rem; font-weight: 800; color: #fff; margin: 10px 0; }
-.live-date { color: #e50914; letter-spacing: 1px; font-size: 0.9rem; }
+/* Clock Styling */
+.live-clock {
+  font-size: clamp(3rem, 15vw, 5.5rem);
+  font-weight: 800;
+  text-align: center;
+  margin: 10px 0;
+}
 
-/* PUNCH BUTTON */
+.live-date {
+  color: #e50914;
+  text-align: center;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* Punch Button */
 .punch-btn-pro {
+  display: block;
   width: 180px;
   height: 180px;
+  margin: 20px auto;
   border-radius: 50%;
   border: none;
   font-weight: 900;
   cursor: pointer;
-  transition: 0.3s;
-  margin-top: 20px;
+  transition: transform 0.2s;
 }
-.punch-btn-pro.in { background: #46d369; box-shadow: 0 0 20px rgba(70, 211, 105, 0.2); }
-.punch-btn-pro.out { background: #e50914; box-shadow: 0 0 20px rgba(229, 9, 20, 0.2); }
 
-/* CALENDAR GRID */
+.punch-btn-pro.in { background: #46d369; color: white; }
+.punch-btn-pro.out { background: #e50914; color: white; }
+
+/* Calendar Grid - THE MOBILE FIX */
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr); /* 7 columns for 7 days */
+  grid-template-columns: repeat(7, 1fr); /* Force 7 columns for desktop */
   gap: 8px;
+  margin-top: 15px;
 }
 
 .day-tile {
-  aspect-ratio: 1/1;
   background: #222;
+  aspect-ratio: 1/1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  position: relative;
   border: 1px solid #333;
-  cursor: pointer;
 }
 
-/* STATUS COLORS */
+.status-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+}
+
+/* Calendar Status Colors */
 .day-tile.present { border-color: #46d369; background: rgba(70, 211, 105, 0.1); }
+.day-tile.present .status-bar { background: #46d369; }
+
 .day-tile.shortage { border-color: #e50914; background: rgba(229, 9, 20, 0.1); }
+.day-tile.shortage .status-bar { background: #e50914; }
+
 .day-tile.pending-approval { border-color: #ffa500; background: rgba(255, 165, 0, 0.1); }
+.day-tile.pending-approval .status-bar { background: #ffa500; }
+
 .day-tile.future { opacity: 0.3; cursor: default; }
 
-.status-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 4px; }
-.present .status-dot { background: #46d369; }
-.shortage .status-dot { background: #e50914; }
-.pending-approval .status-dot { background: #ffa500; }
-
-/* MODAL / REGULARIZATION */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000; padding: 20px;
-}
-.reg-modal { width: 100%; max-width: 400px; }
-.reg-select, textarea {
-  width: 100%; background: #000; color: #fff; border: 1px solid #444;
-  padding: 12px; margin: 10px 0; border-radius: 6px;
+/* Legend */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+  font-size: 0.75rem;
 }
 
-/* --- MOBILE RESPONSIVE QUERIES --- */
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.dot.present { background: #46d369; }
+.dot.pending-approval { background: #ffa500; }
+.dot.shortage { background: #e50914; }
+
+/* Mobile Adjustments */
 @media (max-width: 600px) {
-  .live-clock { font-size: 3rem; }
-  .punch-btn-pro { width: 150px; height: 150px; font-size: 1.1rem; }
-  .calendar-grid { gap: 5px; }
-  .day-number { font-size: 0.9rem; }
-  .tracker-wrapper { padding: 10px; }
-  .stat-value { font-size: 1.2rem; }
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr); /* Keep 7 columns even on small screens */
+    gap: 4px;
+  }
+  .day-tile {
+    font-size: 0.7rem;
+  }
+  .tracker-wrapper {
+    padding: 10px;
+  }
 }
-
